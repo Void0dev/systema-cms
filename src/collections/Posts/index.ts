@@ -143,16 +143,17 @@ export const Posts: CollectionConfig = {
             MetaTitleField({
               hasGenerateFn: true,
             }),
-            MetaImageField({
-              relationTo: 'media',
-            }),
-
+            {
+              name: 'image',
+              type: 'richText',
+              required: false,
+              admin: {
+                description: 'Stores the media object instead of just an ID.',
+              },
+            },
             MetaDescriptionField({}),
             PreviewField({
-              // if the `generateUrl` function is configured
               hasGenerateFn: true,
-
-              // field paths to match the target field for data
               titlePath: 'meta.title',
               descriptionPath: 'meta.description',
             }),
