@@ -13,6 +13,7 @@ import type { Post } from '@/payload-types'
 import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
+import Head from 'next/head'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -45,16 +46,27 @@ export default async function Post({ params: paramsPromise }: Args) {
   const post = await queryPostBySlug({ slug })
 
   if (!post) return <PayloadRedirects url={url} />
-  
+  const { meta: { image: metaImage } = {},title } = post
+  const image = metaImage?.url as string
   return (
+    <>
+    <Head>
+      <title>{title}</title>
+      <meta name="description" content={title} />
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={title} />
+      <meta property="og:image" content={image} />
+      <meta property="og:url" content={`https://payload-development.up.railway.app/${slug}`} />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={title} />
+      <meta name="twitter:image" content={image} />
+    </Head>
+
     <article className="pt-16 pb-16">
       <PageClient />
-
-      {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
-
       <PostHero post={post} />
-
       <div className="flex flex-col items-center gap-4 pt-8">
         <div className="container">
           <RichText className="max-w-[48rem] mx-auto" content={post.content} enableGutter={false} />
@@ -67,6 +79,7 @@ export default async function Post({ params: paramsPromise }: Args) {
         </div>
       </div>
     </article>
+  </>
   )
 }
 
