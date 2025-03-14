@@ -46,7 +46,7 @@ export default async function Post({ params: paramsPromise }: Args) {
   const post = await queryPostBySlug({ slug })
 
   if (!post) return <PayloadRedirects url={url} />
-  const { meta: { image: metaImage } = {},title } = post
+  const { meta: { image: metaImage } = {}, title } = post
   const image = metaImage?.url as string
   return (
     <>
@@ -81,13 +81,6 @@ export default async function Post({ params: paramsPromise }: Args) {
     </article>
   </>
   )
-}
-
-export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
-  const { slug = '' } = await paramsPromise
-  const post = await queryPostBySlug({ slug })
-
-  return generateMeta({ doc: post })
 }
 
 const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
