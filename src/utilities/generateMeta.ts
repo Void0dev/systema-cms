@@ -14,9 +14,11 @@ export const generateMeta = async (args: {
     typeof doc?.meta?.image === 'object' &&
     doc.meta.image !== null &&
     'url' in doc.meta.image &&
-    `${getServerSideURL()}`
+    doc.meta.image.url as string
 
-  const title = 'hello'
+  const title = doc?.title
+    ? doc?.title
+    : 'Payload Website Template'
 
   return {
     description: doc?.meta?.description,
