@@ -46,22 +46,9 @@ export default async function Post({ params: paramsPromise }: Args) {
   const post = await queryPostBySlug({ slug })
 
   if (!post) return <PayloadRedirects url={url} />
-  const { meta: { image: metaImage } = {}, title } = post
+  const { meta: { image: metaImage } = {},title } = post
   const image = metaImage?.url as string
   return (
-    <>
-    <Head>
-      <title>{title}</title>
-      <meta name="description" content={title} />
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={title} />
-      <meta property="og:image" content={image} />
-      <meta property="og:url" content={`https://payload-development.up.railway.app${url}`} />
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={title} />
-      <meta name="twitter:image" content={image} />
-    </Head>
 
     <article className="pt-16 pb-16">
       <PageClient />
@@ -79,8 +66,14 @@ export default async function Post({ params: paramsPromise }: Args) {
         </div>
       </div>
     </article>
-  </>
   )
+}
+
+export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
+  const { slug = '' } = await paramsPromise
+  const post = await queryPostBySlug({ slug })
+
+  return generateMeta({ doc: post })
 }
 
 const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
