@@ -56,7 +56,7 @@ export default async function Post({ params: paramsPromise }: Args) {
       <meta property="og:title" content={title} />
       <meta property="og:description" content={title} />
       <meta property="og:image" content={image} />
-      <meta property="og:url" content={`https://payload-development.up.railway.app/${slug}`} />
+      <meta property="og:url" content={`https://payload-development.up.railway.app${url}`} />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={title} />
