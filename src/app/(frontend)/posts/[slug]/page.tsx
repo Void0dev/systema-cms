@@ -46,8 +46,6 @@ export default async function Post({ params: paramsPromise }: Args) {
   const post = await queryPostBySlug({ slug })
 
   if (!post) return <PayloadRedirects url={url} />
-  const { meta: { image: metaImage } = {},title } = post
-  const image = metaImage?.url as string
   return (
 
     <article className="pt-16 pb-16">
