@@ -6,24 +6,20 @@ import { mergeOpenGraph } from './mergeOpenGraph'
 import { getServerSideURL } from './getURL'
 
 export const generateMeta = async (args: {
-  doc: Partial<Page> | Partial<Post>
+  doc: any
 }): Promise<Metadata> => {
   const { doc } = args || {}
 
-  const ogImage =
-    typeof doc?.meta?.image === 'object' &&
-    doc.meta.image !== null &&
-    'url' in doc.meta.image &&
-    `${getServerSideURL()}`
+  const ogImage = doc.meta.image?.url || `${getServerSideURL()}`
 
-  const title = doc?.meta?.title
-    ? doc?.meta?.title + ' | Payload Website Template'
+  const title = doc?.meta?.alt
+    ? doc?.meta?.alt
     : 'Payload Website Template'
 
   return {
     description: doc?.meta?.description,
     openGraph: mergeOpenGraph({
-      description: doc?.meta?.description || '',
+      description: doc?.meta?.alt || '',
       images: ogImage
         ? [
             {
